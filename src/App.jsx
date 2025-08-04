@@ -1,59 +1,92 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './contexts/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import Analyzer from './pages/Analyzer';
-import History from './pages/History';
-import Learn from './pages/Learn';
+import Dashboard from './pages/Dashboard';
+import Analysis from './pages/Analysis';
+import Learning from './pages/Learning';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import { useAuth } from './contexts/AuthContext';
+
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const { currentUser, loading } = useAuth();
+  
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
+  
+  return currentUser ? children : <Navigate to="/login" />;
+};
+
+// App Layout Component
+const AppLayout = ({ children }) => {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      <main>
+        {children}
+      </main>
+    </div>
+  );
+};
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50">
-          <Navbar />
-          <main>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/analyzer" element={<Analyzer />} />
-              <Route 
-                path="/history" 
-                element={
-                  <ProtectedRoute>
-                    <History />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route path="/learn" element={<Learn />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </Routes>
-          </main>
-          <Toaster
+        <div className="App">
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={
+              <AppLayout>
+                <Home />
+              </AppLayout>
+            } />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            
+            {/* Protected Routes */}
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Dashboard />
+                </AppLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/analysis" element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Analysis />
+                </AppLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/learning" element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Learning />
+                </AppLayout>
+              </ProtectedRoute>
+            } />
+            
+            {/* Catch all route */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+          <Toaster 
             position="top-right"
             toastOptions={{
               duration: 4000,
               style: {
                 background: '#fff',
-                color: '#333',
-                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-              },
-              success: {
-                iconTheme: {
-                  primary: '#10b981',
-                  secondary: '#fff',
-                },
-              },
-              error: {
-                iconTheme: {
-                  primary: '#ef4444',
-                  secondary: '#fff',
-                },
+                color: '#374151',
+                border: '1px solid #e5e7eb',
               },
             }}
           />
