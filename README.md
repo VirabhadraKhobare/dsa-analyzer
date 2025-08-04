@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # DSA Analyzer 📊
 
 A comprehensive React.js application for analyzing Data Structures and Algorithms code with visual complexity analysis, performance metrics, and educational insights.
@@ -177,3 +178,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 ⭐ Star this repository if you find it helpful!
+=======
+# dsa-analyzer
+>>>>>>> a5c5f8c03f61e435e3dab2257661a890b5778fa7
