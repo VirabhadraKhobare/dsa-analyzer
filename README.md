@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # DSA Analyzer 📊
 
 A comprehensive React.js application for analyzing Data Structures and Algorithms code with visual complexity analysis, performance metrics, and educational insights.
